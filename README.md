@@ -3,7 +3,7 @@ Simple Traffic Light based on C++ State Machine running on B&amp;R PLC
 
 In this exercise I'll use latest available AS v.6.3.2.3 (25-Jul-2025):
 
-![image-20250829142111210](C:\Users\108003658\AppData\Roaming\Typora\typora-user-images\image-20250829142111210.png)
+![image-20250829142111210](assets/image-20250829142111210.png)
 
 
 ### Start with new Project
@@ -50,17 +50,17 @@ Add some local variables (later some these Variable will be mapped to OPC UA Nod
 
 ![image-20241211161446677](assets/image-20241211161446677.png)
 
-Duration Variables will hold how long our traffic light will emit the red/yellow/green ligths, boolen variables are just outputs, trace messages will be explained later.
+The Duration* variables define how long the traffic light will emit the red, yellow, and green lights. Boolean variables are just outputs. Trace messages will be explained later.
 
 ### State Machine
 
-As "Template" I will take [High-Performance Hierarchical Finite State Machine](https://github.com/andrew-gresyk/HFSM2) written by Andrew Gresyk.
+As a “template”, I will use the [High-Performance Hierarchical Finite State Machine](https://github.com/andrew-gresyk/HFSM2) written by Andrew Gresyk.
 
 It is single header heriarchical FSM framework in C++11, with fully statically-defined structure (no dynamic allocations), built with variadic templates and "compatible" with B&R.
 
 All what we need is just to copy machine.hpp to the project.
 
-Whole main.cpp as simple as following:
+The entire `main.cpp` is as simple as the following:
 
 ```cpp
 #include <bur/plctypes.h>
@@ -114,7 +114,7 @@ void _EXIT ProgramExit(void)
 
 ```
 
-The only difference is that the original example requires while loop in the main() function:
+The only difference from the original example is that it requires a `while` loop in the `main()` function:
 
 ```
 int main() {
@@ -130,9 +130,9 @@ int main() {
 }
 ```
 
-But on B&R PLC this high-level loop is replaced by CYCLIC program, therefore not needed - the PLC will call it in the loop again and again.
+On a B&R PLC, this high‑level loop is replaced by the CYCLIC program. Therefore, it is not needed — the PLC will call it repeatedly in the execution loop.
 
-All states placed into states.cpp
+All states are placed into states.cpp:
 
 ```cpp
 #include "machine.hpp"
@@ -345,17 +345,17 @@ Very simple.
 
 ### OPC UA
 
-To get traffic light visualized I will map variables to OPC UA Server.
+To visualize the traffic light, I will map variables to the OPC UA server.
 
-In AS 6 the setings for OPC UA was moved to the following location:
+In AS 6, the OPC UA settings were moved to the following location:
 
 ![image-20241211164729090](assets/image-20241211164729090.png)
 
-I will enable everything. Strange, I wasn't able to get connected to the OPC UA anonymously, therefore added one user here:
+I enable everything. Interestingly, I was not able to connect to OPC UA anonymously as in AS4, but no problem, so I added a user:
 
 ![image-20241211164904784](assets/image-20241211164904784.png)
 
-Second part of the Config:
+Second part of the configuration:
 
 ![image-20241211165004289](assets/image-20241211165004289.png)
 
@@ -377,7 +377,7 @@ This is how it works:
 
 ![](assets/tl1.gif)
 
-Update 12-Dec-2024 — simple mappView Visualization added:
+Update 12-Dec-2024 — a simple mappView visualization was added:
 
 ![](assets/ampel2.gif)
 
